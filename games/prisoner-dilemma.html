@@ -21,12 +21,12 @@
             height: 100%;
         }
 
-        #myTable1 {
+        table {
             margin: 0 auto;
         }
 
-        #myTable2 {
-            margin: 0 auto;
+        input {
+            text-align: center;
         }
 
     </style>
@@ -118,7 +118,7 @@
     <div id="tableContainer-2">
         <table>
             <tr>
-                <table id="myTable1">
+                <table>
                     <tr>
                         <th>Василиса</th>
                         <th>Василиса</th>
@@ -169,7 +169,7 @@
             </tr>
 
             <tr>
-                <table id="myTable2" border>
+                <table border>
                     <caption></caption>
                     <tr>
                         <th>Команда</th>
@@ -186,7 +186,7 @@
                         <th>Итого</th>
                     </tr>
                     <tr>
-                        <td><input type="text" size="40" value="Команда альтруистов" align="middle"></td>
+                        <td><input type="text" size="40" value="Команда альтруистов"></td>
                         <td>
                             <select  size="4" id="person00" onchange="compute(this)">
                                 <option selected>Выберите</option>
@@ -268,12 +268,12 @@
                             </select>
                         </td>
                         <td>
-                            <input id="firstCount" type="number" size="3" value="0" align="middle" disabled>
+                            <input id="firstCount" type="number" size="3" value="0" disabled>
                         </td>
                     </tr>
 
                     <tr>
-                        <td><input type="text" size="40" value="Команда гитаристов" align="middle"></td>
+                        <td><input type="text" size="40" value="Команда гитаристов"></td>
                         <td>
                             <select size="4" id="person10" onchange="compute(this)">
                                 <option selected>Выберите</option>
@@ -355,7 +355,7 @@
                             </select>
                         </td>
                         <td>
-                            <input id="secondCount" type="number" size="3" value="0" align="middle" disabled>
+                            <input id="secondCount" type="number" size="3" value="0" disabled>
                         </td>
                     </tr>
 
