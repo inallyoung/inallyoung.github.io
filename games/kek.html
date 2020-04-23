@@ -34,85 +34,79 @@
     <script>
         function compute(selectObject) {
 
-            var penultimate = selectObject.id.charAt(selectObject.id.length - 2);
-            var last = selectObject.id.charAt(selectObject.id.length - 1);
-
-            var firstSelect;
-            var secondSelect;
-
-            if (penultimate === "0") {
-                firstSelect = selectObject;
-                secondSelect = document.getElementById("person1" + last);
-            } else {
-                firstSelect = document.getElementById("person0" + last);
-                secondSelect = selectObject;
-            }
-
-            firstCount = document.getElementById("firstCount");
-            secondCount = document.getElementById("secondCount");
-
             var chose = "Выберите";
             var vasilisa = "Василиса";
             var dragon = "Дракон";
             var hero = "Богатырь";
 
-            if (firstSelect.value === chose || secondSelect.value === chose) {
-                return;
+            var firstCountValue = 0;
+            var secondCountValue = 0;
+
+            for (i = 0; i < 10; ++i) {
+                firstSelect = document.getElementById("person0" + i);
+                secondSelect = document.getElementById("person1" + i);
+
+                if (firstSelect.value === chose || secondSelect.value === chose) {
+                    continue;
+                }
+
+                if (firstSelect.value === vasilisa && secondSelect.value === vasilisa) {
+                    firstCountValue += 2;
+                    secondCountValue += 2;
+                    continue;
+                }
+
+                if (firstSelect.value === dragon && secondSelect.value === dragon) {
+                    firstCountValue -= 3;
+                    secondCountValue -= 3;
+                    continue;
+                }
+
+                if (firstSelect.value === hero && secondSelect.value === hero) {
+                    firstCountValue -= 3;
+                    secondCountValue -= 3;
+                    continue;
+                }
+
+                if (firstSelect.value === vasilisa && secondSelect.value === dragon) {
+                    firstCountValue -= 3;
+                    secondCountValue += 3;
+                    continue;
+                }
+
+                if (firstSelect.value === dragon && secondSelect.value === vasilisa) {
+                    firstCountValue += 3;
+                    secondCountValue -= 3;
+                    continue;
+                }
+
+                if (firstSelect.value === hero && secondSelect.value === vasilisa) {
+                    firstCountValue += 5;
+                    secondCountValue += 5;
+                    continue;
+                }
+
+                if (firstSelect.value === vasilisa && secondSelect.value === hero) {
+                    firstCountValue += 5;
+                    secondCountValue += 5;
+                    continue;
+                }
+
+                if (firstSelect.value === dragon && secondSelect.value === hero) {
+                    firstCountValue -= 3;
+                    secondCountValue += 5;
+                    continue;
+                }
+
+                if (firstSelect.value === hero && secondSelect.value === dragon) {
+                    firstCountValue += 5;
+                    secondCountValue -= 3;
+                    continue;
+                }
             }
 
-            if (firstSelect.value === vasilisa && secondSelect.value === vasilisa ) {
-                firstCount.value = parseInt(firstCount.value) + 2;
-                secondCount.value = parseInt(secondCount.value) + 2;
-                return;
-            }
-
-            if (firstSelect.value === dragon && secondSelect.value === dragon ) {
-                firstCount.value = parseInt(firstCount.value) - 3;
-                secondCount.value = parseInt(secondCount.value) - 3;
-                return;
-            }
-
-            if (firstSelect.value === hero && secondSelect.value === hero ) {
-                firstCount.value = parseInt(firstCount.value) - 3;
-                secondCount.value = parseInt(secondCount.value) - 3;
-                return;
-            }
-
-            if (firstSelect.value === vasilisa && secondSelect.value === dragon ) {
-                firstCount.value = parseInt(firstCount.value) - 3;
-                secondCount.value = parseInt(secondCount.value) + 3;
-                return;
-            }
-
-            if (firstSelect.value === dragon && secondSelect.value === vasilisa ) {
-                firstCount.value = parseInt(firstCount.value) + 3;
-                secondCount.value = parseInt(secondCount.value) - 3;
-                return;
-            }
-
-            if (firstSelect.value === hero && secondSelect.value === vasilisa ) {
-                firstCount.value = parseInt(firstCount.value) + 5;
-                secondCount.value = parseInt(secondCount.value) + 5;
-                return;
-            }
-
-            if (firstSelect.value === vasilisa && secondSelect.value === hero ) {
-                firstCount.value = parseInt(firstCount.value) + 5;
-                secondCount.value = parseInt(secondCount.value) + 5;
-                return;
-            }
-
-            if (firstSelect.value === dragon && secondSelect.value === hero ) {
-                firstCount.value = parseInt(firstCount.value) - 3;
-                secondCount.value = parseInt(secondCount.value) + 5;
-                return;
-            }
-
-            if (firstSelect.value === hero && secondSelect.value === dragon ) {
-                firstCount.value = parseInt(firstCount.value) + 5;
-                secondCount.value = parseInt(secondCount.value) - 3;
-                return;
-            }
+            document.getElementById("firstCount").value = firstCountValue;
+            document.getElementById("secondCount").value = secondCountValue;
 
         }
     </script>
