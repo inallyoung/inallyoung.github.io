@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        #tableContainer-1 {
+            height: 100%;
+            width: 100%;
+            display: table;
+        }
+
+        #tableContainer-2 {
+            vertical-align: middle;
+            display: table-cell;
+            height: 100%;
+        }
+
+        #myTable1 {
+            margin: 0 auto;
+        }
+
+        #myTable2 {
+            margin: 0 auto;
+        }
+
+    </style>
+
+    <script>
+        function compute(selectObject) {
+
+            var penultimate = selectObject.id.charAt(selectObject.id.length - 2);
+            var last = selectObject.id.charAt(selectObject.id.length - 1);
+
+            var firstSelect;
+            var secondSelect;
+
+            if (penultimate === "0") {
+                firstSelect = selectObject;
+                secondSelect = document.getElementById("person1" + last);
+            } else {
+                firstSelect = document.getElementById("person0" + last);
+                secondSelect = selectObject;
+            }
+
+            firstCount = document.getElementById("firstCount");
+            secondCount = document.getElementById("secondCount");
+
+            var chose = "Выберите";
+            var vasilisa = "Василиса";
+            var dragon = "Дракон";
+            var hero = "Богатырь";
+
+            if (firstSelect.value === chose || secondSelect.value === chose) {
+                return;
+            }
+
+            if (firstSelect.value === vasilisa && secondSelect.value === vasilisa ) {
+                firstCount.value = parseInt(firstCount.value) + 2;
+                secondCount.value = parseInt(secondCount.value) + 2;
+                return;
+            }
+
+            if (firstSelect.value === dragon && secondSelect.value === dragon ) {
+                firstCount.value = parseInt(firstCount.value) - 3;
+                secondCount.value = parseInt(secondCount.value) - 3;
+                return;
+            }
+
+            if (firstSelect.value === hero && secondSelect.value === hero ) {
+                firstCount.value = parseInt(firstCount.value) - 3;
+                secondCount.value = parseInt(secondCount.value) - 3;
+                return;
+            }
+
+            if (firstSelect.value === vasilisa && secondSelect.value === dragon ) {
+                firstCount.value = parseInt(firstCount.value) - 3;
+                secondCount.value = parseInt(secondCount.value) + 3;
+                return;
+            }
+
+            if (firstSelect.value === dragon && secondSelect.value === vasilisa ) {
+                firstCount.value = parseInt(firstCount.value) + 3;
+                secondCount.value = parseInt(secondCount.value) - 3;
+                return;
+            }
+
+            if (firstSelect.value === hero && secondSelect.value === vasilisa ) {
+                firstCount.value = parseInt(firstCount.value) + 5;
+                secondCount.value = parseInt(secondCount.value) + 5;
+                return;
+            }
+
+            if (firstSelect.value === vasilisa && secondSelect.value === hero ) {
+                firstCount.value = parseInt(firstCount.value) + 5;
+                secondCount.value = parseInt(secondCount.value) + 5;
+                return;
+            }
+
+            if (firstSelect.value === dragon && secondSelect.value === hero ) {
+                firstCount.value = parseInt(firstCount.value) - 3;
+                secondCount.value = parseInt(secondCount.value) + 5;
+                return;
+            }
+
+            if (firstSelect.value === hero && secondSelect.value === dragon ) {
+                firstCount.value = parseInt(firstCount.value) + 5;
+                secondCount.value = parseInt(secondCount.value) - 3;
+                return;
+            }
+
+        }
+    </script>
+
+</head>
+<body>
+
+<div id="tableContainer-1">
+    <div id="tableContainer-2">
+        <table>
+            <tr>
+                <table id="myTable1">
+                    <tr>
+                        <th>Василиса</th>
+                        <th>Василиса</th>
+                        <th>2 : 2</th>
+                    </tr>
+                    <tr>
+                        <th>Дракон</th>
+                        <th>Дракон</th>
+                        <th>-3 : -3</th>
+                    </tr>
+                    <tr>
+                        <th>Богатырь</th>
+                        <th>Богатырь</th>
+                        <th>-3 : -3</th>
+                    </tr>
+                    <tr>
+                        <th>Василиса</th>
+                        <th>Дракон</th>
+                        <th>-3 : 3</th>
+                    </tr>
+                    <tr>
+                        <th>Дракон</th>
+                        <th>Василиса</th>
+                        <th>3 : -3</th>
+                    </tr>
+                    <tr>
+                        <th>Богатырь</th>
+                        <th>Василиса</th>
+                        <th>5 : 5</th>
+                    </tr>
+                    <tr>
+                        <th>Василиса</th>
+                        <th>Богатырь</th>
+                        <th>5 : 5</th>
+                    </tr>
+                    <tr>
+                        <th>Дракон</th>
+                        <th>Богатырь</th>
+                        <th>-3 : 5</th>
+                    </tr>
+                    <tr>
+                        <th>Богатырь</th>
+                        <th>Дракон</th>
+                        <th>5 : -3</th>
+                    </tr>
+                </table>
+            </tr>
+
+            <tr>
+                <table id="myTable2" border>
+                    <caption></caption>
+                    <tr>
+                        <th>Команда</th>
+                        <th>Раунд 1</th>
+                        <th>Раунд 2</th>
+                        <th>Раунд 3</th>
+                        <th>Раунд 4</th>
+                        <th>Раунд 5</th>
+                        <th>Раунд 6</th>
+                        <th>Раунд 7</th>
+                        <th>Раунд 8</th>
+                        <th>Раунд 9</th>
+                        <th>Раунд 10</th>
+                        <th>Итого</th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" size="40"></td>
+                        <td>
+                            <select  size="4" id="person00" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person01" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person02" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person03" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person04" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person05" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person06" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person07" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person08" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person09" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input id="firstCount" type="number" size="3" value="0" disabled>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><input type="text" size="40"></td>
+                        <td>
+                            <select size="4" id="person10" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person11" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person12" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person13" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person14" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person15" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person16" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person17" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person18" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select size="4" id="person19" onchange="compute(this)">
+                                <option selected>Выберите</option>
+                                <option value="Василиса">Василиса</option>
+                                <option value="Дракон">Дракон</option>
+                                <option value="Богатырь">Богатырь</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input id="secondCount" type="number" size="3" value="0" disabled>
+                        </td>
+                    </tr>
+
+                </table>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
