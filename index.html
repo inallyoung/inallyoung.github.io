@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Silento — burnout drift index, computed quietly on-device</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Silento is a minimalist anti-app that quietly builds your personal burnout index on-device using screen time, bedtime and location patterns — and shows how far you drift from your normal baseline."
+  />
+
+  <style>
+    :root {
+      --bg: #050014;
+      --bg-soft: #0b0224;
+      --accent: #a855ff;
+      --accent-soft: rgba(168, 85, 255, 0.14);
+      --text-main: #f9f5ff;
+      --text-muted: #b5a8d9;
+      --border-subtle: rgba(185, 163, 255, 0.16);
+      --radius-xl: 24px;
+      --radius-full: 999px;
+      --shadow-soft: 0 24px 80px rgba(5, 0, 40, 0.75);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1a0538 0, var(--bg) 52%, #020008 100%);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 720px;
+      background: linear-gradient(145deg, var(--bg-soft), #050014);
+      border-radius: 32px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 28px 24px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glow {
+      position: absolute;
+      inset: -40%;
+      opacity: 0.65;
+      background:
+        radial-gradient(circle at top right, rgba(168, 85, 255, 0.25), transparent 55%),
+        radial-gradient(circle at bottom left, rgba(79, 70, 229, 0.22), transparent 55%);
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(168, 85, 255, 0.25);
+      background: rgba(5, 0, 40, 0.9);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(168, 85, 255, 0.3);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .brand-mark {
+      width: 26px;
+      height: 26px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 20% 0, #f9f5ff 0, #c4b5fd 22%, #7c3aed 45%, #4c1d95 100%);
+      box-shadow: 0 10px 26px rgba(64, 18, 124, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 700;
+      color: #0b0224;
+    }
+
+    .brand-name {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(32px, 5vw, 40px);
+      letter-spacing: -0.04em;
+    }
+
+    .subtitle {
+      margin: 0 0 22px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 520px;
+    }
+
+    .subtitle strong {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .metrics-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 4px 0 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .metric-pill {
+      border-radius: var(--radius-full);
+      padding: 4px 10px;
+      border: 1px solid rgba(168, 85, 255, 0.34);
+      background: rgba(9, 4, 40, 0.9);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      gap: 18px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 640px) {
+      .shell {
+        border-radius: 24px;
+        padding: 22px 18px 18px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      border-radius: var(--radius-xl);
+      padding: 14px 16px 14px;
+      background: rgba(7, 4, 33, 0.95);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .card-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .list li + li {
+      margin-top: 6px;
+    }
+
+    .list strong {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .cta-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: var(--accent);
+      color: #110020;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 14px 40px rgba(168, 85, 255, 0.5);
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out,
+        background 0.12s ease-out;
+      white-space: nowrap;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 54px rgba(168, 85, 255, 0.65);
+      background: #bf7bff;
+    }
+
+    .cta-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 8px 30px rgba(168, 85, 255, 0.45);
+    }
+
+    .cta-note {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .cta-note span {
+      color: var(--accent);
+    }
+
+    footer {
+      margin-top: 22px;
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    .mono {
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="glow" aria-hidden="true"></div>
+
+    <div class="content">
+      <div class="pill">
+        <span class="pill-dot"></span>
+        <span>Silento.app · coming soon</span>
+      </div>
+
+      <div class="brand">
+        <div class="brand-mark">S</div>
+        <div class="brand-name">Silento</div>
+      </div>
+
+      <h1>Your burnout drift index, computed quietly on-device.</h1>
+
+      <p class="subtitle">
+        <strong>Silento</strong> is a minimalist anti-app that passively collects
+        a few signals from your life &mdash; screen time, bedtime and location
+        patterns &mdash; and lets on-device AI build a personal burnout index.
+        No feeds, no prompts. Just a gentle view of how far you’ve drifted from your
+        normal baseline.
+      </p>
+
+      <div class="metrics-row" aria-label="Signals used by Silento">
+        <div class="metric-pill">📱 Screen time rhythms</div>
+        <div class="metric-pill">🌙 Bedtime consistency</div>
+        <div class="metric-pill">📍 Location & commute patterns</div>
+      </div>
+
+      <section class="grid" aria-label="How Silento works">
+        <article class="card">
+          <h2 class="card-title">How it works (quietly)</h2>
+          <ul class="list">
+            <li>
+              <strong>Local AI only.</strong> Raw data stays on your device while
+              Silento learns what “normal” looks like for you.
+            </li>
+            <li>
+              <strong>Drift, not diagnosis.</strong> You see how today compares
+              to your usual patterns, not a clinical label.
+            </li>
+            <li>
+              <strong>Background first.</strong> No daily check-ins, no streaks,
+              no “productivity” goals. Open only when you need perspective.
+            </li>
+          </ul>
+
+          <div class="cta-line">
+            <a
+              class="cta-btn"
+              href="mailto:hello@silento.app?subject=Silento%20early%20access&body=Tell%20me%20when%20Silento%20is%20ready.%20Optional%3A%20how%20you%20currently%20track%20stress%20or%20burnout%3F"
+            >
+              Get early access
+            </a>
+            <p class="cta-note">
+              Drop a short note — we’ll reach out once the first private builds are ready.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2 class="card-title">What makes it different</h2>
+          <ul class="list">
+            <li>❌ no pushy notifications</li>
+            <li>❌ no social features, likes or streaks</li>
+            <li>❌ no cloud profile of your stress</li>
+            <li>✅ a small, local model tuned to <strong>your</strong> baseline</li>
+            <li>✅ one clear signal: <strong>are you drifting too far?</strong></li>
+          </ul>
+        </article>
+      </section>
+
+      <footer>
+        <div class="mono">silento.app</div>
+        <div>Being close to burnout shouldn’t be something you notice only when it’s too late.</div>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>
